@@ -66,10 +66,10 @@ sdist/
 var/
 wheels/
 
-# Model Files - Large Data
+# Model Files - Large Data (except pre-trained models)
 *.h5
 *.hdf5
-*.keras
+# *.keras  - Allow trained models to be uploaded
 *.model
 *.ckpt
 *.onnx
