@@ -74,6 +74,7 @@ export interface SettingsUpdatePayload {
 export class DataService {
   // Use environment-based API URL (Netlify function proxy or direct backend)
   private apiUrl = this.getApiUrl();
+  private analyticsState$ = new BehaviorSubject<AnalyticsResponse | null>(null);
 
   constructor(private http: HttpClient) {
     this.checkApiHealth();
