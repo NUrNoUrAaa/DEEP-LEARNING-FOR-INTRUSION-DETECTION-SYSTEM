@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build & Test
 
 on:
   push:
@@ -27,12 +27,7 @@ jobs:
       run: npm ci
     
     - name: Build Angular project
-      run: npm run build -- --configuration production
+      run: npm run build
     
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist/ids-dashboard/browser
-        cname: ids-dashboard.example.com
+    - name: Build Status
+      run: echo "Build completed successfully!"
