@@ -48,7 +48,7 @@ env/
 ENV/
 
 # Python - Cache & Build
-__pycache__/
+# __pycache__/  - Allow uploading Python cache for reference
 *.py[cod]
 *.class
 *.so
@@ -94,10 +94,10 @@ wheels/
 *.gz
 
 # Data directories
-Model/data/
-dataset/
-datasets/
-data/
+# Model/data/  - Allow uploading for reference
+# dataset/  - Allow dataset uploads
+# datasets/  - Allow datasets uploads
+# data/  - Allow data uploads
 checkpoints/
 models/
 logs/
