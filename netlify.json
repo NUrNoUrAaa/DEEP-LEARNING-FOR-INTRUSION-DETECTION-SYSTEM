@@ -1,0 +1,24 @@
+{
+  "build": {
+    "environment": {
+      "NODE_VERSION": "18.0.0"
+    }
+  },
+  "functions": {
+    "api": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "redirects": [
+    {
+      "from": "/api/*",
+      "to": "/.netlify/functions/api/:splat",
+      "status": 200
+    },
+    {
+      "from": "/*",
+      "to": "/index.html",
+      "status": 200
+    }
+  ]
+}

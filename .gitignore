@@ -117,3 +117,6 @@ logs/
 *.swp
 *.swo
 *~
+
+# Local Netlify folder
+.netlify

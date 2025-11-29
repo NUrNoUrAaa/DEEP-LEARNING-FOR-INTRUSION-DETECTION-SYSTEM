@@ -72,12 +72,22 @@ export interface SettingsUpdatePayload {
   providedIn: 'root'
 })
 export class DataService {
-  private apiUrl = 'http://localhost:5000/api';
-  private analyticsState$ = new BehaviorSubject<AnalyticsResponse | null>(null);
+  // Use environment-based API URL (Netlify function proxy or direct backend)
+  private apiUrl = this.getApiUrl();
 
   constructor(private http: HttpClient) {
     this.checkApiHealth();
     this.getAnalytics().subscribe();
+  }
+
+  private getApiUrl(): string {
+    // In production (Netlify), API calls are proxied through Netlify functions
+    // In development, connect directly to Flask backend
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+      return 'http://localhost:5000/api';
+    }
+    // For Netlify: use relative path to trigger the proxy function
+    return '/api';
   }
 
   // ============================================================
