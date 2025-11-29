@@ -82,8 +82,8 @@ wheels/
 *.xlsx
 *.xls
 *.feather
-*.pickle
-*.pkl
+# *.pickle  - Allow important pickle files for model
+# *.pkl     - Allow pickle files for deployment
 *.joblib
 *.npy
 *.npz
