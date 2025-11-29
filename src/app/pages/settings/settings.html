@@ -1,0 +1,38 @@
+<div class="settings-container">
+    <h2 class="title">⚙️ Settings</h2>
+
+    <!-- Theme -->
+    <div class="setting-item">
+        <label>Theme</label>
+        <button (click)="toggleTheme()" class="btn">
+      {{ darkMode ? '🌙 Dark' : '☀️ Light' }}
+    </button>
+    </div>
+
+    <!-- Notifications -->
+    <div class="setting-item">
+        <label>Notifications</label>
+        <input type="checkbox" [(ngModel)]="notificationsEnabled" />
+    </div>
+
+    <!-- Model Preferences -->
+    <div class="setting-item">
+        <label>Preferred Model</label>
+        <select [(ngModel)]="selectedModel" class="select-model">
+    <option *ngFor="let m of models" [value]="m">{{m}}</option>
+  </select>
+    </div>
+
+
+    <!-- Account -->
+    <div class="account-section">
+        <h3 class="subtitle">👤 Account Info</h3>
+        <p><strong>Username:</strong> {{account.username}}</p>
+        <p><strong>Email:</strong> {{account.email}}</p>
+    </div>
+
+    <!-- Save Button -->
+    <div class="actions">
+        <button (click)="saveSettings()" class="btn-save">Save Changes</button>
+    </div>
+</div>

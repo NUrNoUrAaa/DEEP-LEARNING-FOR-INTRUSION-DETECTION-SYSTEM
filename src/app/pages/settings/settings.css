@@ -1,0 +1,109 @@
+.settings-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+:host-context(.dark) .settings-container {
+    background: #1f2937;
+    color: #f3f4f6;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+:host-context(.dark) .setting-item {
+    border-color: #374151;
+}
+
+.setting-item label {
+    font-weight: 500;
+}
+
+.subtitle {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.account-section p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-save {
+    margin-top: 2rem;
+    padding: 0.75rem 2rem;
+    background: #10b981;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-save:hover {
+    background: #059669;
+}
+
+.select-model {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    font-size: 0.95rem;
+    color: #111827;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.select-model:hover {
+    border-color: #3b82f6;
+}
+
+.select-model:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+}
+
+:host-context(.dark) .select-model {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f3f4f6;
+}
+
+:host-context(.dark) .select-model:focus {
+    border-color: #06b6d4;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+}

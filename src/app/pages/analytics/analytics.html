@@ -1,0 +1,190 @@
+<div class="analytics-root">
+
+    <!-- Performance Metrics -->
+    <div class="kpis-grid">
+        <div class="card kpi-card" *ngFor="let metric of performanceMetrics">
+            <h3>
+                <span>{{metric.icon}}</span> {{metric.label}}
+            </h3>
+            <div class="kpi-row">
+                <p class="value" [ngClass]="metric.color">{{metric.value}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPIs row -->
+    <div class="kpis-grid">
+        <div class="card kpi-card">
+            <h3>
+                <i class="pi pi-globe"></i> Total Traffic
+            </h3>
+            <div class="kpi-row">
+                <p class="value primary">{{overview.totalTraffic}}</p>
+                    <div class="progress">
+                    <div class="progress-fill primary" [style.width]="progressPct(Math.min(100,(asNumber(overview.totalTraffic)/20)))"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card kpi-card">
+            <h3>
+                <i class="pi pi-shield"></i> Benign Traffic
+            </h3>
+            <div class="kpi-row">
+                <p class="value success">{{overview.benignCount || 0}}</p>
+                <div class="progress">
+                    <div class="progress-fill success" [style.width]="progressPct(Math.min(100,(asNumber(overview.benignCount || 0)/asNumber(overview.totalTraffic || 1))*100))"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card kpi-card">
+            <h3>
+                <i class="pi pi-exclamation-circle"></i> Detected Attacks
+            </h3>
+            <div class="kpi-row">
+                <p class="value danger">{{overview.detected}}</p>
+                    <div class="progress">
+                    <div class="progress-fill danger" [style.width]="progressPct(Math.min(100,(asNumber(overview.detected)/500)*100))"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card kpi-card">
+            <h3>
+                <i class="pi pi-check-circle"></i> Accuracy
+            </h3>
+            <div class="kpi-row">
+                <p class="value success">{{overview.accuracy}}%</p>
+                <div class="progress">
+                    <div class="progress-fill success" [style.width]="progressPct(overview.accuracy)"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card kpi-card">
+            <h3>
+                <i class="pi pi-bell"></i> Active Alerts
+            </h3>
+            <div class="kpi-row">
+                <p class="value warn">{{overview.activeAlerts}}</p>
+                <div class="progress">
+                    <div class="progress-fill warn" [style.width]="progressPct(Math.min(100,asNumber(overview.activeAlerts)*10))"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main grid -->
+    <div class="grid-main">
+
+        <!-- Left column (charts) -->
+        <div class="left-col">
+
+            <div class="card">
+                <h4>Traffic Line</h4>
+                <apx-chart *ngIf="trafficChartOptions.series" [series]="trafficChartOptions.series" [chart]="trafficChartOptions.chart" [xaxis]="trafficChartOptions.xaxis" [stroke]="trafficChartOptions.stroke" [colors]="trafficChartOptions.colors" [tooltip]="trafficChartOptions.tooltip"
+                    [grid]="trafficChartOptions.grid"></apx-chart>
+            </div>
+
+            <div class="card">
+                <h4>Attacks Per Day (Bar)</h4>
+                <apx-chart *ngIf="barChartOptions.series" [series]="barChartOptions.series" [chart]="barChartOptions.chart" [xaxis]="barChartOptions.xaxis" [plotOptions]="barChartOptions.plotOptions" [colors]="barChartOptions.colors" [grid]="barChartOptions.grid" [tooltip]="barChartOptions.tooltip"></apx-chart>
+            </div>
+
+            <div class="card">
+                <h4>Detection Trend (Area)</h4>
+                <apx-chart *ngIf="areaChartOptions.series" [series]="areaChartOptions.series" [chart]="areaChartOptions.chart" [xaxis]="areaChartOptions.xaxis" [stroke]="areaChartOptions.stroke" [fill]="areaChartOptions.fill" [colors]="areaChartOptions.colors" [grid]="areaChartOptions.grid"
+                    [tooltip]="areaChartOptions.tooltip"></apx-chart>
+            </div>
+
+            <div class="card">
+                <h4>Heatmap (Activity)</h4>
+                <apx-chart *ngIf="heatmapOptions.series" [tooltip]="heatmapOptions.tooltip" [series]="heatmapOptions.series" [chart]="heatmapOptions.chart" [dataLabels]="heatmapOptions.dataLabels" [plotOptions]="heatmapOptions.plotOptions" [colors]="heatmapOptions.colors"></apx-chart>
+            </div>
+
+        </div>
+
+        <!-- Right column -->
+        <aside class="right-col">
+
+            <div class="card">
+                <h4>Attack Distribution</h4>
+                <apx-chart *ngIf="donutOptions.series" [series]="donutOptions.series" [chart]="donutOptions.chart" [labels]="donutOptions.labels" [legend]="donutOptions.legend" [colors]="donutOptions.colors"></apx-chart>
+            </div>
+
+        <div class="card preferred-summary" *ngIf="preferredModel">
+            <h4>Preferred Model</h4>
+            <p class="muted">{{preferredModel!.name}}</p>
+            <p class="small-text">{{preferredModel!.description}}</p>
+            <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+                <div>
+                    <span class="label">Acc</span>
+                    <strong class="value text-green-500">{{preferredModel!.accuracy | number:'1.0-2'}}%</strong>
+                </div>
+                <div>
+                    <span class="label">Precision</span>
+                    <strong class="value text-blue-500">{{preferredModel!.precision | number:'1.0-2'}}%</strong>
+                </div>
+                <div>
+                    <span class="label">Recall</span>
+                    <strong class="value text-purple-500">{{preferredModel!.recall | number:'1.0-2'}}%</strong>
+                </div>
+            </div>
+        </div>
+
+            <div class="card">
+                <h4>Model Performance (Radar)</h4>
+                <apx-chart *ngIf="radarOptions.series" [series]="radarOptions.series" [tooltip]="radarOptions.tooltip" [chart]="radarOptions.chart" [xaxis]="radarOptions.xaxis" [colors]="radarOptions.colors"></apx-chart>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- Additional Analytics Section -->
+    <div class="grid-main">
+        <!-- Model Comparison -->
+        <div class="left-col">
+            <div class="card">
+                <h4>Model Comparison (Accuracy, Precision, Recall)</h4>
+                <apx-chart *ngIf="modelComparisonOptions.series" [series]="modelComparisonOptions.series" [chart]="modelComparisonOptions.chart" [xaxis]="modelComparisonOptions.xaxis" [plotOptions]="modelComparisonOptions.plotOptions" [colors]="modelComparisonOptions.colors" [grid]="modelComparisonOptions.grid" [tooltip]="modelComparisonOptions.tooltip"></apx-chart>
+            </div>
+
+            <div class="card">
+                <h4>Feature Importance (Top 8)</h4>
+                <apx-chart *ngIf="featureImportanceOptions.series" [series]="featureImportanceOptions.series" [chart]="featureImportanceOptions.chart" [xaxis]="featureImportanceOptions.xaxis" [plotOptions]="featureImportanceOptions.plotOptions" [colors]="featureImportanceOptions.colors" [grid]="featureImportanceOptions.grid" [tooltip]="featureImportanceOptions.tooltip"></apx-chart>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <aside class="right-col">
+            <!-- Attack Types Breakdown -->
+            <div class="card">
+                <h4>Attack Types Breakdown</h4>
+                <table class="alerts-table">
+                    <thead>
+                        <tr>
+                            <th>Attack Type</th>
+                            <th>Count</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let attack of attackBreakdown">
+                            <td class="muted">{{attack.type}}</td>
+                            <td>{{attack.count | number}}</td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 60px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
+                                        <div [style.width]="attack.percentage + '%'" style="height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6);"></div>
+                                    </div>
+                                    <span style="font-weight: bold; min-width: 30px;">{{attack.percentage}}%</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </aside>
+    </div>
+</div>

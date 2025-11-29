@@ -1,0 +1,43 @@
+.navbar {
+    @apply fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3 bg-white shadow-md animate-fade-in-down;
+}
+
+.navbar {
+    @apply text-gray-700;
+}
+
+.dark .navbar {
+    @apply bg-gray-900 text-gray-300 shadow-lg;
+}
+
+.navbar-logo {
+    @apply flex items-center space-x-2 font-bold text-lg cursor-pointer;
+}
+
+.navbar-logo span {
+    @apply text-blue-600;
+}
+
+.dark .navbar-logo span {
+    @apply text-purple-400;
+}
+
+.nav-link {
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 180ms ease;
+    color: #374151;
+}
+
+.nav-link:hover {
+    color: #2563eb;
+}
+
+.dark .nav-link {
+    color: #D1D5DB;
+}
+
+.dark .nav-link:hover {
+    color: #7c3aed;
+}

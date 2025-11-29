@@ -1,0 +1,27 @@
+.dashboard-container {
+    @apply pt-20 pl-64 pr-6 pb-6 min-h-screen transition-colors duration-300;
+}
+
+.dashboard-container {
+    @apply bg-gray-100 text-gray-800;
+}
+
+.dark .dashboard-container {
+    @apply bg-gray-800 text-gray-100;
+}
+
+.dashboard-card {
+    @apply p-6 bg-white rounded-2xl shadow-lg transition;
+}
+
+.dark .dashboard-card {
+    @apply bg-gray-900 text-gray-200 shadow-xl;
+}
+
+.chart-container {
+    @apply bg-white rounded-xl shadow-md p-4;
+}
+
+.dark .chart-container {
+    @apply bg-gray-900 text-gray-100;
+}

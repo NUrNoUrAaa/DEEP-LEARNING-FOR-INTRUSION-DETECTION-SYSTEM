@@ -1,0 +1,285 @@
+<div class="mb-6 p-6 rounded-2xl bg-gradient-to-r from-cyberBlue to-blue-600 text-white shadow-lg">
+    <h2 class="text-2xl font-bold mb-2">Dashboard</h2>
+    <p class="text-sm opacity-90">
+        Active Model: <span class="font-semibold">{{preferredModel?.name || 'Loading...'}}</span>
+        <span *ngIf="preferredModel" class="ml-4 text-xs opacity-75">
+            Accuracy: {{preferredModel.accuracy | number:'1.0-2'}}% | 
+            Precision: {{preferredModel.precision | number:'1.0-2'}}% | 
+            Recall: {{preferredModel.recall | number:'1.0-2'}}%
+        </span>
+    </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left: KPIs + recent alerts -->
+    <div class="lg:col-span-2 space-y-6">
+        <!-- KPIs -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+                <h3 class="text-sm text-gray-600 dark:text-gray-400">Total Traffic</h3>
+                <p class="text-2xl font-bold text-cyberBlue">{{overview?.totalTraffic}}</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+                <h3 class="text-sm text-gray-600 dark:text-gray-400">Detected Attacks</h3>
+                <p class="text-2xl font-bold text-red-500">{{overview?.detected}}</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+                <h3 class="text-sm text-gray-600 dark:text-gray-400">Accuracy</h3>
+                <p class="text-2xl font-bold text-green-500">{{overview?.accuracy}}%</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+                <h3 class="text-sm text-gray-600 dark:text-gray-400">Active Alerts</h3>
+                <p class="text-2xl font-bold text-yellow-500">{{overview?.activeAlerts}}</p>
+            </div>
+        </div>
+
+        <!-- Traffic chart -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+            <apx-chart *ngIf="trafficChartOptions.series" [tooltip]="trafficChartOptions.tooltip" [series]="trafficChartOptions.series" [chart]="trafficChartOptions.chart" [xaxis]="trafficChartOptions.xaxis" [stroke]="trafficChartOptions.stroke">
+            </apx-chart>
+        </div>
+
+        <!-- Recent Alerts -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+            <div class="flex justify-between items-center mb-3">
+                <h4 class="font-semibold text-gray-800 dark:text-white">Recent Alerts</h4>
+                <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">{{recentAlerts.length}} total</span>
+            </div>
+            <div class="space-y-2">
+                <div *ngFor="let a of displayedAlerts" class="p-3 rounded-lg border-l-4 transition-all hover:shadow-md" 
+                     [ngClass]="{
+                       'bg-red-50 dark:bg-red-900/20 border-red-500': a.severity === 'Critical',
+                       'bg-orange-50 dark:bg-orange-900/20 border-orange-500': a.severity === 'High',
+                       'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-500': a.severity === 'Medium',
+                       'bg-green-50 dark:bg-green-900/20 border-green-500': a.severity === 'Low'
+                     }">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-xs font-semibold" [ngClass]="{
+                                  'text-red-700 dark:text-red-300': a.severity === 'Critical',
+                                  'text-orange-700 dark:text-orange-300': a.severity === 'High',
+                                  'text-yellow-700 dark:text-yellow-300': a.severity === 'Medium',
+                                  'text-green-700 dark:text-green-300': a.severity === 'Low'
+                                }">
+                                    {{a.severity}}
+                                </span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">{{a.type}}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">{{a.src}}</p>
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">{{a.time}}</span>
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="recentAlerts.length > 5" (click)="toggleShowAllAlerts()" class="mt-3 w-full py-2 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition">
+                {{showAllAlerts ? '← Show Less' : 'Read More →'}}
+            </button>
+        </div>
+    </div>
+
+    <!-- Right: Donut + model summary -->
+    <div class="space-y-6">
+        <!-- Donut -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+            <apx-chart *ngIf="donutOptions.series" [series]="donutOptions.series" [chart]="donutOptions.chart" [labels]="donutOptions.labels" [legend]="donutOptions.legend">
+            </apx-chart>
+        </div>
+
+        <!-- Model Summary -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+            <h4 class="font-semibold mb-2 text-gray-800 dark:text-white">Model Summary</h4>
+            <div class="text-sm text-gray-600 dark:text-gray-300">
+                Current:
+                <span class="font-medium text-cyberBlue">
+                    {{preferredModel?.name || 'Select a model'}}
+                </span>
+            </div>
+            <div *ngIf="preferredModel; else noModel" class="mt-3 grid grid-cols-3 gap-2">
+                <div class="p-2 bg-gray-50 dark:bg-gray-700 rounded text-center">
+                    <span class="text-xs text-gray-600 dark:text-gray-300">Acc</span><br/>
+                    <strong class="text-green-500">{{preferredModel!.accuracy | number:'1.0-2'}}%</strong>
+                </div>
+                <div class="p-2 bg-gray-50 dark:bg-gray-700 rounded text-center">
+                    <span class="text-xs text-gray-600 dark:text-gray-300">Precision</span><br/>
+                    <strong class="text-blue-500">{{preferredModel!.precision | number:'1.0-2'}}%</strong>
+                </div>
+                <div class="p-2 bg-gray-50 dark:bg-gray-700 rounded text-center">
+                    <span class="text-xs text-gray-600 dark:text-gray-300">Recall</span><br/>
+                    <strong class="text-purple-500">{{preferredModel!.recall | number:'1.0-2'}}%</strong>
+                </div>
+            </div>
+            <ng-template #noModel>
+                <div class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                    Select Model
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<!-- Notebook Insights Section -->
+<div class="mt-8 space-y-6">
+    <!-- Model Performance Metrics Table -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">📊 Model Performance Metrics</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th class="p-3 text-left text-gray-600 dark:text-gray-300">Model</th>
+                        <th class="p-3 text-center text-gray-600 dark:text-gray-300">Accuracy</th>
+                        <th class="p-3 text-center text-gray-600 dark:text-gray-300">Precision</th>
+                        <th class="p-3 text-center text-gray-600 dark:text-gray-300">Recall</th>
+                        <th class="p-3 text-center text-gray-600 dark:text-gray-300">F1-Score</th>
+                        <th class="p-3 text-center text-gray-600 dark:text-gray-300">Latency (ms)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let model of modelComparison" class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <td class="p-3 font-medium text-gray-800 dark:text-white">{{model.name}}</td>
+                        <td class="p-3 text-center">
+                            <span class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded text-xs font-semibold">
+                                {{model.accuracy | number:'1.1-1'}}%
+                            </span>
+                        </td>
+                        <td class="p-3 text-center text-gray-700 dark:text-gray-300">{{model.precision | number:'1.1-1'}}%</td>
+                        <td class="p-3 text-center text-gray-700 dark:text-gray-300">{{model.recall | number:'1.1-1'}}%</td>
+                        <td class="p-3 text-center text-gray-700 dark:text-gray-300">{{model.f1 | number:'1.1-1'}}%</td>
+                        <td class="p-3 text-center text-gray-700 dark:text-gray-300"><strong>{{model.latency}}ms</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div *ngFor="let metric of keyMetrics" class="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
+            <div class="text-2xl mb-2">{{metric.icon}}</div>
+            <div class="text-xs text-gray-600 dark:text-gray-400">{{metric.label}}</div>
+            <div class="text-lg font-bold text-blue-600 dark:text-blue-400">{{metric.value}}</div>
+        </div>
+    </div>
+
+    <!-- Dataset Statistics -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">📊 Dataset Statistics</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-6 gap-4">
+            <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">2.8M+</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">Total Records</div>
+            </div>
+            <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                <div class="text-2xl font-bold text-green-600 dark:text-green-400">85%</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">Benign</div>
+            </div>
+            <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                <div class="text-2xl font-bold text-red-600 dark:text-red-400">15%</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">Attack</div>
+            </div>
+            <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">41</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">Features</div>
+            </div>
+            <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">9</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">Attack Types</div>
+            </div>
+            <div class="text-center p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">80/20</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">Train/Test</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attack Types & Top Features -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Attack Types -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+            <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">🎯 Attack Types Distribution</h3>
+            <div class="space-y-3">
+                <div *ngFor="let attack of attackTypes" class="flex items-center gap-3">
+                    <div class="flex-1">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{attack.name}}</span>
+                            <span class="text-xs font-bold text-blue-600 dark:text-blue-400">{{attack.percentage}}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" [style.width]="attack.percentage + '%'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Features -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+            <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">⭐ Top Important Features</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div *ngFor="let feature of topFeatures; let i = index" class="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                        {{i + 1}}
+                    </div>
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{feature}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MLP Model Architectures -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">🏗️ MLP Model Architectures</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+            <div *ngFor="let model of mlpArchitectures" class="p-3 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
+                <div class="font-semibold text-sm text-gray-800 dark:text-white mb-2">{{model.name}}</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    <div class="font-mono">{{model.layers}}</div>
+                </div>
+                <div class="flex justify-between text-xs">
+                    <span class="text-gray-600 dark:text-gray-400">{{model.params}} params</span>
+                    <span class="font-bold text-green-600 dark:text-green-400">{{model.accuracy}}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preprocessing Pipeline -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">🔄 Data Preprocessing Pipeline</h3>
+        <div class="flex flex-wrap gap-2 items-center justify-between">
+            <div *ngFor="let step of preprocessingSteps; let last = last" class="flex items-center gap-2">
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
+                        {{step.step}}
+                    </div>
+                    <span class="text-xs font-semibold text-gray-700 dark:text-gray-300 mt-1 text-center max-w-[80px]">{{step.name}}</span>
+                </div>
+                <div *ngIf="!last" class="text-2xl text-blue-500 dark:text-blue-400 mx-1">→</div>
+            </div>
+        </div>
+        <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-xs text-gray-600 dark:text-gray-400">
+            <div *ngFor="let step of preprocessingSteps" class="mb-2">
+                <strong>{{step.step}}. {{step.name}}:</strong> {{step.desc}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Attack Types Breakdown - Full Width -->
+    <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">🎯 Attack Types Breakdown</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div *ngFor="let attack of attackBreakdown" class="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-semibold text-gray-800 dark:text-white">{{attack.type}}</span>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400">{{attack.percentage}}%</span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" [style.width]="attack.percentage + '%'"></div>
+                </div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">{{attack.count | number}} records</div>
+            </div>
+        </div>
+    </div>
+</div>
+

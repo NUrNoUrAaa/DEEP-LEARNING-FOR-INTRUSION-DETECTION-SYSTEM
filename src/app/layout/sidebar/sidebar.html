@@ -1,0 +1,14 @@
+<div>
+    <!-- mobile overlay -->
+    <div class="sidebar-overlay" *ngIf="isMobile && isOpen" (click)="sb.closeSidebar()"></div>
+
+    <aside [class.sidebar-open]="isOpen" [class.sidebar-closed]="!isOpen" class="sidebar" role="complementary">
+        <nav class="menu" aria-label="Main Navigation">
+            <a routerLink="/dashboard" routerLinkActive="active-link" class="menu-link"> <i class="pi pi-home"></i> Dashboard </a>
+            <a routerLink="/analytics" routerLinkActive="active-link" class="menu-link"> <i class="pi pi-chart-line"></i> Analytics </a>
+            <a routerLink="/alerts" routerLinkActive="active-link" class="menu-link"> <i class="pi pi-bell"></i> Alerts </a>
+            <a routerLink="/models" routerLinkActive="active-link" class="menu-link"> <i class="pi pi-database"></i> Models </a>
+            <a routerLink="/settings" routerLinkActive="active-link" class="menu-link"> <i class="pi pi-cog"></i> Settings </a>
+        </nav>
+    </aside>
+</div>

@@ -1,0 +1,29 @@
+<div class="details-container bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" *ngIf="model">
+    <h2 class="text-xl font-bold mb-3 text-cyberBlue dark:text-cyan-400">
+        {{model.name}} - Details
+    </h2>
+
+    <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+        {{model.description}}
+    </p>
+
+    <div class="chart-wrapper bg-gray-50 dark:bg-gray-700 p-3 rounded-xl">
+        <canvas baseChart [data]="getChartData()" [options]="chartOptions" [type]="'radar'">
+    </canvas>
+    </div>
+
+    <div class="stats grid grid-cols-3 gap-3 mt-4">
+        <div class="stat-item bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
+            <p class="text-sm">Accuracy</p>
+            <p class="font-bold text-green-500">{{model.accuracy}}%</p>
+        </div>
+        <div class="stat-item bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
+            <p class="text-sm">Precision</p>
+            <p class="font-bold text-blue-500">{{model.precision}}%</p>
+        </div>
+        <div class="stat-item bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
+            <p class="text-sm">Recall</p>
+            <p class="font-bold text-yellow-500">{{model.recall}}%</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="alerts-container">
+    <div class="alerts-header">
+        <h2 class="alerts-title">
+            <i class="pi pi-bell"></i> All Alerts
+        </h2>
+        <span class="alert-count">{{ alerts.length }} alerts</span>
+    </div>
+
+    <div class="alerts-table-wrapper">
+        <table class="alerts-table">
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                    <th class="col-time">
+                        <i class="pi pi-clock"></i> Time
+                    </th>
+                    <th class="col-type">
+                        <i class="pi pi-shield"></i> Type
+                    </th>
+                    <th class="col-source">
+                        <i class="pi pi-server"></i> Source
+                    </th>
+                    <th class="col-severity">
+                        <i class="pi pi-exclamation-triangle"></i> Severity
+                    </th>
+                </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody>
+                <tr *ngFor="let a of alerts; let i = index" 
+                    class="alert-row" 
+                    [ngClass]="'severity-' + (a.severity.toLowerCase() || 'low')">
+                    
+                    <td class="col-time">
+                        <span class="time-badge">{{ a.time }}</span>
+                    </td>
+                    
+                    <td class="col-type">
+                        <span class="type-badge">{{ a.type }}</span>
+                    </td>
+                    
+                    <td class="col-source">
+                        <span class="source-badge">{{ a.src }}</span>
+                    </td>
+                    
+                    <td class="col-severity">
+                        <span class="severity-badge" [ngClass]="'severity-' + (a.severity.toLowerCase() || 'low')">
+                            <i class="pi" [ngClass]="getSeverityIcon(a.severity)"></i>
+                            {{ a.severity }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="alerts-empty" *ngIf="alerts.length === 0">
+        <i class="pi pi-inbox"></i>
+        <p>No alerts at the moment</p>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<nav class="flex items-center justify-between px-6 h-16 bg-white/60 dark:bg-gray-900/60 shadow-md fixed top-0 left-0 right-0 z-50 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 animate-fade-in-down">
+    <!-- left -->
+    <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold text-xl shadow-md animate-bounce-slow"> IDS </div> <span class="text-lg font-semibold text-gray-700 dark:text-gray-200 tracking-wide"> Intrusion Detection Dashboard </span> </div>
+    <!-- center (links - hidden on small screens) -->
+    <div class="hidden md:flex items-center space-x-6 font-medium"> <a routerLink="/dashboard" routerLinkActive="text-blue-600 dark:text-purple-400 font-semibold" [routerLinkActiveOptions]="{exact:true}" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-purple-400 transition">Dashboard</a>        <a routerLink="/analytics" routerLinkActive="text-blue-600 dark:text-purple-400 font-semibold" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-purple-400 transition">Analytics</a> <a routerLink="/alerts" routerLinkActive="text-blue-600 dark:text-purple-400 font-semibold"
+            class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-purple-400 transition">Alerts</a> <a routerLink="/models" routerLinkActive="text-blue-600 dark:text-purple-400 font-semibold" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-purple-400 transition">Models</a>        <a routerLink="/settings" routerLinkActive="text-blue-600 dark:text-purple-400 font-semibold" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-purple-400 transition">Settings</a> </div>
+    <!-- right -->
+    <div class="flex items-center space-x-4"> <button (click)="toggleTheme()" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:scale-110 transition shadow-sm"> <span *ngIf="theme === 'light'">🌙</span><span *ngIf="theme === 'dark'">☀️</span> </button>
+        <!-- sidebar toggle (visible on small screens) -->
+        <button (click)="toggleSidebar()" class="md:hidden p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"> ☰ </button>
+    </div>
+</nav>

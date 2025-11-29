@@ -1,0 +1,326 @@
+    /* ====== Layout ====== */
+    
+    .analytics-root {
+        padding: 1rem;
+        transition: background-color 220ms ease, color 220ms ease;
+    }
+    /* KPIs grid */
+    
+    .kpis-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .kpi-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .kpi-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    /* main grid */
+    
+    .grid-main {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 1rem;
+    }
+    /* responsive */
+    
+    @media (max-width: 1024px) {
+        .grid-main {
+            grid-template-columns: 1fr;
+        }
+        .kpis-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    /* ====== Cards ====== */
+    
+    .card {
+        margin: 10px;
+        background: #ffffff;
+        color: #111827;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+        transition: transform 260ms ease, box-shadow 260ms ease, background 260ms ease, color 260ms ease;
+        animation: fadeUp 420ms ease both;
+    }
+    
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.09);
+    }
+    
+     :host-context(.dark) .card {
+        background: linear-gradient(180deg, #0f1724, #111827);
+        color: #f9fafb;
+        box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+    }
+    /* titles */
+    
+    .card h3,
+    .card h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.95rem;
+        color: #374151;
+    }
+    
+     :host-context(.dark) .card h3,
+     :host-context(.dark) .card h4 {
+        color: #f9fafb;
+    }
+    /* ====== KPI Values ====== */
+    
+    .value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    
+    .value.primary {
+        color: #0ea5b7;
+    }
+    
+    .value.danger {
+        color: #dc2626;
+    }
+    
+    .value.success {
+        color: #16a34a;
+    }
+    
+    .value.warn {
+        color: #d97706;
+    }
+    /* ====== Progress bars ====== */
+    
+    .progress {
+        height: 8px;
+        background: rgba(15, 23, 42, 0.06);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 0.25rem;
+    }
+    
+     :host-context(.dark) .progress {
+        background: rgba(255, 255, 255, 0.06);
+    }
+    
+    .progress-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 999px;
+        transition: width 800ms cubic-bezier(.2, .9, .3, 1);
+    }
+    
+    .progress-fill.primary {
+        background: linear-gradient(90deg, #60a5fa, #0ea5e9);
+    }
+    
+    .progress-fill.danger {
+        background: linear-gradient(90deg, #fb7185, #ef4444);
+    }
+    
+    .progress-fill.success {
+        background: linear-gradient(90deg, #34d399, #10b981);
+    }
+    
+    .progress-fill.warn {
+        background: linear-gradient(90deg, #fbbf24, #f97316);
+    }
+    /* ====== Alerts Table ====== */
+    
+    .alerts-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .alerts-table thead th {
+        text-align: left;
+        padding: 8px;
+        font-size: 0.85rem;
+        color: #6b7280;
+    }
+    
+     :host-context(.dark) .alerts-table thead th {
+        color: #d1d5db;
+    }
+    
+    .alerts-table tbody td {
+        padding: 8px;
+        border-top: 1px solid #eef2f7;
+        color: #111827;
+    }
+    
+     :host-context(.dark) .alerts-table tbody td {
+        color: #f9fafb;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    
+    .muted {
+        color: #6b7280;
+    }
+    
+     :host-context(.dark) .muted {
+        color: #9ca3af;
+    }
+    /* ====== Severity Badges ====== */
+    
+    .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.78rem;
+    }
+    
+    .severity-high {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+    }
+    
+     :host-context(.dark) .severity-high {
+        background: rgba(239, 68, 68, 0.15);
+        color: #fca5a5;
+    }
+    
+    .severity-medium {
+        background: rgba(245, 158, 11, 0.12);
+        color: #d97706;
+    }
+    
+     :host-context(.dark) .severity-medium {
+        background: rgba(251, 191, 36, 0.12);
+        color: #facc15;
+    }
+    
+    .severity-low {
+        background: rgba(34, 197, 94, 0.12);
+        color: #22c55e;
+    }
+    
+     :host-context(.dark) .severity-low {
+        background: rgba(34, 197, 94, 0.12);
+        color: #4ade80;
+    }
+
+    .preferred-summary .label {
+        display: block;
+        font-size: 0.75rem;
+        color: #94a3b8;
+    }
+
+    :host-context(.dark) .preferred-summary .label {
+        color: #cbd5f5;
+    }
+
+    .preferred-summary .value {
+        display: block;
+        font-size: 1rem;
+        margin-top: 0.25rem;
+    }
+    /* ====== Pager ====== */
+    
+    .pager {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: #6b7280;
+    }
+    
+     :host-context(.dark) .pager {
+        color: #d1d5db;
+    }
+    
+    .pager button {
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: none;
+        background: #eef2f7;
+        cursor: pointer;
+    }
+    
+     :host-context(.dark) .pager button {
+        background: rgba(255, 255, 255, 0.06);
+        color: #f9fafb;
+    }
+    
+    .pager button:hover {
+        background: #e5e7eb;
+    }
+    
+     :host-context(.dark) .pager button:hover {
+        background: rgba(255, 255, 255, 0.12);
+    }
+    /* ====== Animations ====== */
+    
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* ====== Responsive Tweaks ====== */
+    
+    @media (max-width: 900px) {
+        .kpis-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-main {
+            grid-template-columns: 1fr;
+        }
+        .right-col {
+            order: 2;
+        }
+    }
+    /* === ApexCharts Toolbar === */
+    
+    .apexcharts-menu {
+        background: #ffffff;
+        color: #111827;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        font-size: 0.85rem;
+    }
+    
+    .apexcharts-menu-item {
+        padding: 6px 12px;
+        transition: background 0.2s ease;
+    }
+    
+    .apexcharts-menu-item:hover {
+        background: #f3f4f6;
+        cursor: pointer;
+    }
+    /* Dark mode */
+    
+     :host-context(.dark) .apexcharts-menu {
+        background: #1f2937;
+        /* gray-800 */
+        color: #f9fafb;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    }
+    
+     :host-context(.dark) .apexcharts-menu-item:hover {
+        background: #374151;
+        /* gray-700 */
+    }
